@@ -263,7 +263,7 @@ class TrainContext:
 		self.trainer_output_dir = self.run_dir / "wav2vec2-large-mms-1b-amharic-cv"
 		training_args = TrainingArguments(
 			output_dir=self.trainer_output_dir,
-			group_by_length=True,
+			train_sampling_strategy="group_by_length",
 			per_device_train_batch_size=24,  # Lowered from 32 to lower memory pressure
 			gradient_accumulation_steps=1,  # NOTE: This could be used as another lever to reduce memory pressure some more
 			eval_strategy="steps",
