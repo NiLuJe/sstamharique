@@ -40,7 +40,9 @@ def import_dataset() -> DatasetDict:
 			"segment",
 		]
 	)
-	dataset_full = dataset_full.cast_column("audio", Audio(sampling_rate=16000))
+	# NOTE: There is currently a bug similar to https://github.com/huggingface/datasets/pull/7800
+	#       where the cast from pa.large_string fails, so cast it to pa.string first...
+	dataset_full = dataset_full.cast_column("audio", Value(dtype="string").cast_column("audio", Audio(sampling_rate=16000))
 
 	dataset = dataset_full.train_test_split(test_size=0.2, seed=42)
 	dataset_val = dataset["train"].train_test_split(test_size=0.2, seed=42)
